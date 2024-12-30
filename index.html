@@ -60,7 +60,10 @@
     <script>
         // Helper function to format numbers as currency
         function formatCurrency(amount) {
-            return amount.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+            return amount.toLocaleString('id-ID', { style: 'currency', currency: 'IDR', 
+            minimumFractionDigits: 3,
+            maximumFractionDigits: 3     
+            });
         }
 
         // Function to format the input value with a thousand separator
@@ -124,10 +127,10 @@
             <input type="number" id="jarak_tempuh" name="jarak_tempuh" required inputmode="decimal">
             
             <label for="harga_bbm">Harga BBM per Liter (Rp):</label>
-            <input type="text" id="harga_bbm" name="harga_bbm" oninput="formatInputCurrency(event)" required inputmode="decimal">
+            <input type="text" id="harga_bbm" name="harga_bbm" oninput="formatInputCurrency(event)" required inputmode="number">
             
             <label for="konsumsi_bbm">Konsumsi BBM (km/liter):</label>
-            <input type="number" id="konsumsi_bbm" name="konsumsi_bbm" required inputmode="decimal">
+            <input type="number" id="konsumsi_bbm" name="konsumsi_bbm" required inputmode="number">
             
             <button type="submit">Hitung</button>
         </form>
