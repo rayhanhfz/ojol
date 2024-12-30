@@ -13,7 +13,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f4f4f4;
+            /* background: linear-gradient(45deg, #00FF00, #FF7F00); Gradient hijau muda ke oranye */
             font-family: Arial, sans-serif;
         }
         .container {
@@ -26,6 +26,7 @@
         }
         h1 {
             text-align: center;
+            color: #333; /* Warna teks judul */
         }
         form label, form input, form button {
             width: 100%;
@@ -33,23 +34,17 @@
         }
         form button {
             margin-top: 20px;
+            background-color: #00FF00; /* Hijau muda */
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #FF7F00; /* Oranye saat hover */
         }
         #hasil h2 {
             margin-top: 30px;
             text-align: center;
-        }
-        input[type="number"] {
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-        input[type="number"]:focus {
-            outline-color: #4CAF50;
-        }
-        input::placeholder {
-            font-size: 14px;
-            color: #aaa;
         }
         @media (max-width: 768px) {
             .container {
@@ -68,12 +63,20 @@
             return amount.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
         }
 
+        // Function to format the input value with a thousand separator
+        function formatInputCurrency(event) {
+            let input = event.target;
+            let value = input.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+            value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Add thousand separators
+            input.value = value ? 'Rp ' + value : ''; // Prefix with 'Rp'
+        }
+
         // Function to calculate earnings
         function hitungPendapatan() {
             // Get input values and ensure they are numbers
-            const pendapatan = parseFloat(document.getElementById('pendapatan').value);
+            const pendapatan = parseFloat(document.getElementById('pendapatan').value.replace(/[^\d.-]/g, ''));
             const jarakTempuh = parseFloat(document.getElementById('jarak_tempuh').value);
-            const hargaBBM = parseFloat(document.getElementById('harga_bbm').value);
+            const hargaBBM = parseFloat(document.getElementById('harga_bbm').value.replace(/[^\d.-]/g, ''));
             const konsumsiBBM = parseFloat(document.getElementById('konsumsi_bbm').value);
 
             // Input validation
@@ -115,16 +118,16 @@
         <h1>Kalkulator Pendapatan Ojol</h1>
         <form onsubmit="event.preventDefault(); hitungPendapatan();">
             <label for="pendapatan">Pendapatan Harian (Rp):</label>
-            <input type="number" id="pendapatan" name="pendapatan" placeholder="Masukkan pendapatan harian" required step="1000">
+            <input type="text" id="pendapatan" name="pendapatan" oninput="formatInputCurrency(event)" required>
             
             <label for="jarak_tempuh">Jarak Tempuh Harian (km):</label>
-            <input type="number" id="jarak_tempuh" name="jarak_tempuh" placeholder="Masukkan jarak tempuh harian" required step="0.1">
+            <input type="number" id="jarak_tempuh" name="jarak_tempuh" required>
             
             <label for="harga_bbm">Harga BBM per Liter (Rp):</label>
-            <input type="number" id="harga_bbm" name="harga_bbm" placeholder="Masukkan harga BBM per liter" required step="100">
+            <input type="text" id="harga_bbm" name="harga_bbm" oninput="formatInputCurrency(event)" required>
             
             <label for="konsumsi_bbm">Konsumsi BBM (km/liter):</label>
-            <input type="number" id="konsumsi_bbm" name="konsumsi_bbm" placeholder="Masukkan konsumsi BBM" required step="0.1">
+            <input type="number" id="konsumsi_bbm" name="konsumsi_bbm" required>
             
             <button type="submit">Hitung</button>
         </form>
